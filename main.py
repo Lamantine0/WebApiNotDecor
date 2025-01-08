@@ -13,75 +13,75 @@ class User:
 
 
     def create_user(self, username : str, email: str):
+        
+        while True:
 
-        with setting.CreateSession() as db:
+            with setting.CreateSession() as db:
 
-            user_create = Table_user(
+                user_create = Table_user(
                 
-                username = username,
+                    username = username,
 
-                email = email
+                    email = email
             )
 
-            db.add(user_create)
-            db.commit()
-            db.refresh(user_create)
+                db.add(user_create)
+                db.commit()
+                db.refresh(user_create)
 
-            return user_create  
-
-
-    def input_user():
-
-        create_new_user = User()
-
-        username_input = input("Введите имя пользователя: ")
-
-        email_input = input("Введите email: ")
-
-        user = create_new_user.create_user(username_input, email_input)
-
-        print(f"Пользователь создан : {user.username} | {user.email} ")
-
-        print("\n")   
-
-        print("="*30 + "\n")   
+                return user_create  
 
 
-    def get_all_users():
+    def input_user(self):
 
-        with setting.CreateSession() as db:
+        while True:
 
-            user_list = []
+            create_new_user = User()
 
-            get_user = db.query(Table_user).all()
+            username_input = input("Введите имя пользователя: (или 'exit' для выхода):")
 
-            for user in get_user:
+            if username_input.lower() == "exit":
+                
+                break
 
-              user_list.append({
+            email_input = input("Введите email: ")
 
-                    "username" : user.username,
+            user = create_new_user.create_user(username_input, email_input)
 
-                    "email" : user.email
-                    
-                })
-                    
-        for user in user_list:
-            print(f"Имя пользователя: {user['username']}, Email: {user['email']}")
-
-            print("="*30 + "\n")        
+            return(f"Пользователь создан : {user.username} | {user.email} ")
 
 
 
 
+    def get_all_users(self):
 
+        while True:
+                
+            with setting.CreateSession() as db:
 
+                user_list = db.query(Table_user).all()
 
+            if not user_list:
+
+                print("Нет пользователей в базе данных.")
+                 
+            for user in user_list:
+
+                print(f"ID Пользователя: {user.id} Имя пользователя: {user.username}, Email: {user.email}")
+
+                print("=" * 30 + "\n")
+
+            break                
             
 
-User.input_user()
+user_manager = User()
+
+user_manager.input_user()
+
+user_manager.get_all_users()
 
 
-User.get_all_users()
+
          
 
 
