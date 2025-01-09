@@ -14,7 +14,7 @@ class User:
 
     def create_user(self, username : str, email: str):
         
-        while True:
+       # while True:
 
             with setting.CreateSession() as db:
 
@@ -42,20 +42,20 @@ class User:
 
             if username_input.lower() == "exit":
                 
-                break
+                break 
 
             email_input = input("Введите email: ")
+
+            print("\n")
 
             user = create_new_user.create_user(username_input, email_input)
 
             return(f"Пользователь создан : {user.username} | {user.email} ")
 
 
-
-
     def get_all_users(self):
 
-        while True:
+        #while True:
                 
             with setting.CreateSession() as db:
 
@@ -64,24 +64,36 @@ class User:
             if not user_list:
 
                 print("Нет пользователей в базе данных.")
+
+            user_list_ = []    
                  
             for user in user_list:
+                
+                user_list_.append({
+                    
+                    "user_id" :  user.id,
+                    "username" : user.username,
+                    "email" : user.email 
+                })
 
-                print(f"ID Пользователя: {user.id} Имя пользователя: {user.username}, Email: {user.email}")
+            print(user_list_)
+                
 
-                print("=" * 30 + "\n")
-
-            break                
+                          
             
 
-user_manager = User()
+    def while_method():
 
-user_manager.input_user()
+        while True:
 
-user_manager.get_all_users()
+            user_manager = User()
+
+            user_manager.input_user()
+
+            user_manager.get_all_users()
 
 
 
-         
+User.while_method()         
 
 
